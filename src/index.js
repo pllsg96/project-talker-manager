@@ -2,7 +2,6 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const bodyParser = require('body-parser');
-const { takeCoverage } = require('v8');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,7 +28,7 @@ app.get('/talker/:id', async (req, res) => {
   const talkersJson = JSON.parse(talkers);
   const lookingForId = talkersJson.filter((talker) => talker.id === Number(findThisId));
   if (lookingForId.length) res.status(200).json(lookingForId[0]);
-  else res.status(404).json({ message: "Pessoa palestrante não encontrada" });
+  else res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
 app.listen(PORT, () => {
