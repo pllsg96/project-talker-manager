@@ -2,7 +2,11 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const bodyParser = require('body-parser');
-const { createToken, validateEmail } = require('./utilities');
+const {
+  createToken,
+  validateEmail,
+  validatePassword,
+} = require('./utilities');
 
 const app = express();
 app.use(bodyParser.json());
@@ -35,7 +39,7 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Requisito 3
-app.post('/login', validateEmail, async (_req, res) => {
+app.post('/login', validateEmail, validatePassword, async (_req, res) => {
   const tkn = createToken();
   res.status(HTTP_OK_STATUS).json({ token: tkn });
 });
