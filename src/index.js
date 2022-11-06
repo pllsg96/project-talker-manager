@@ -39,7 +39,7 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Requisito 3
-app.post('/login', validateEmail, validatePassword, async (_req, res) => {
+app.post('/login', validateEmail, validatePassword, (_req, res) => {
   const tkn = createToken();
   res.status(HTTP_OK_STATUS).json({ token: tkn });
 });

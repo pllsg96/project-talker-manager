@@ -1,4 +1,4 @@
-const HTTP_NOT_FOUND_STATUS = 400;
+const HTTP_400_STATUS = 400;
 const crypto = require('crypto');
 
 const createToken = () => crypto.randomBytes(8).toString('hex');
@@ -9,11 +9,11 @@ const validateEmail = (req, res, next) => {
   const isValid = regEmail.test(email);
 
   if (!email) {
-    res.status(HTTP_NOT_FOUND_STATUS)
+    res.status(HTTP_400_STATUS)
       .json({ message: 'O campo "email" é obrigatório' });
   }
   if (!isValid) {
-  res.status(HTTP_NOT_FOUND_STATUS)
+  res.status(HTTP_400_STATUS)
   .json({ message: 'O "email" deve ter o formato "email@email.com"' }); 
   }
 
@@ -23,14 +23,13 @@ const validateEmail = (req, res, next) => {
 const validatePassword = (req, res, next) => {
   const { password } = req.body;
 
-  const isValid = password.length >= 6;
-
   if (!password) {
-    res.status(HTTP_NOT_FOUND_STATUS)
+    res.status(HTTP_400_STATUS)
       .json({ message: 'O campo "password" é obrigatório' });
   }
+  const isValid = password.length >= 6;
   if (!isValid) {
-    res.status(HTTP_NOT_FOUND_STATUS)
+    res.status(HTTP_400_STATUS)
       .json({ message: 'O "password" deve ter pelo menos 6 caracteres' });
   }
 
