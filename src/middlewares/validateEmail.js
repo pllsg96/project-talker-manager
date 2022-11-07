@@ -1,4 +1,4 @@
-const HTTP_400_STATUS = 400;
+const HTTP_BAD_REQUEST_STATUS = 400;
 
 const validateEmail = (req, res, next) => {
   const { email } = req.body;
@@ -6,11 +6,11 @@ const validateEmail = (req, res, next) => {
   const isValid = regEmail.test(email);
 
   if (!email) {
-    res.status(HTTP_400_STATUS)
+    res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'O campo "email" é obrigatório' });
   }
   if (!isValid) {
-  res.status(HTTP_400_STATUS)
+  res.status(HTTP_BAD_REQUEST_STATUS)
   .json({ message: 'O "email" deve ter o formato "email@email.com"' }); 
   }
 
