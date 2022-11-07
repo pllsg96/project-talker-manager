@@ -2,11 +2,9 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 const bodyParser = require('body-parser');
-const {
-  createToken,
-  validateEmail,
-  validatePassword,
-} = require('./utilities');
+const { createToken } = require('./utils/generateToken');
+const { validateEmail } = require('./middlewares/validateEmail');
+const { validatePassword } = require('./middlewares/validatePassword');
 
 const app = express();
 app.use(bodyParser.json());
@@ -38,11 +36,13 @@ app.get('/talker/:id', async (req, res) => {
   else res.status(HTTP_NOT_FOUND_STATUS).json({ message: 'Pessoa palestrante não encontrada' });
 });
 
-// Requisito 3
+// Requisito 3 e 4
 app.post('/login', validateEmail, validatePassword, (_req, res) => {
   const tkn = createToken();
   res.status(HTTP_OK_STATUS).json({ token: tkn });
 });
+
+// app.post('/talker')
 
 app.listen(PORT, () => {
   console.log('Online');
