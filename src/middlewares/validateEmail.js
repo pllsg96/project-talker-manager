@@ -6,11 +6,11 @@ const validateEmail = (req, res, next) => {
   const isValid = regEmail.test(email);
 
   if (!email) {
-    res.status(HTTP_BAD_REQUEST_STATUS)
+    return res.status(HTTP_BAD_REQUEST_STATUS)
       .json({ message: 'O campo "email" é obrigatório' });
   }
   if (!isValid) {
-  res.status(HTTP_BAD_REQUEST_STATUS)
+    return res.status(HTTP_BAD_REQUEST_STATUS)
   .json({ message: 'O "email" deve ter o formato "email@email.com"' }); 
   }
 

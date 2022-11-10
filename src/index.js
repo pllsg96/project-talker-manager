@@ -4,14 +4,23 @@ const { createToken } = require('./utils/generateToken');
 const { validateEmail } = require('./middlewares/validateEmail');
 const { validatePassword } = require('./middlewares/validatePassword');
 const { validateToken } = require('./middlewares/validateToken');
+const { validateName } = require('./middlewares/validateName');
+const { validateAge } = require('./middlewares/validateAge');
+const { validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validateTalk');
 const { getTalkers } = require('./utils/getTalkers');
+const { createNewUser } = require('./utils/createNewUser');
 
 const app = express();
 app.use(bodyParser.json());
 
 const HTTP_OK_STATUS = 200;
+const HTTP_CREATED_STATUS = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
 const PORT = '3000';
+
+app.listen(PORT, () => {
+  console.log('Online');
+});
 
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
@@ -39,10 +48,16 @@ app.post('/login', validateEmail, validatePassword, (_req, res) => {
 });
 
 // Requisito 5
-app.post('/talker', validateToken, (_req, res) => {
-  res.status(HTTP_OK_STATUS).json('?');
-});
-
-app.listen(PORT, () => {
-  console.log('Online');
+app.use(validateToken);
+app.post('/talker',
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+    const { name, age, talk } = req.body;
+    const addNewUser = await createNewUser(name, age, talk);
+    const lastOneTalker = addNewUser[addNewUser.length - 1];
+  res.status(HTTP_CREATED_STATUS).json(lastOneTalker);
 });
