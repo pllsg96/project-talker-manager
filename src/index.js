@@ -9,6 +9,7 @@ const { validateAge } = require('./middlewares/validateAge');
 const { validateTalk, validateWatchedAt, validateRate } = require('./middlewares/validateTalk');
 const { getTalkers } = require('./utils/getTalkers');
 const { createNewUser } = require('./utils/createNewUser');
+const { editUser } = require('./utils/editUser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -60,4 +61,20 @@ app.post('/talker',
     const addNewUser = await createNewUser(name, age, talk);
     const lastOneTalker = addNewUser[addNewUser.length - 1];
   res.status(HTTP_CREATED_STATUS).json(lastOneTalker);
+});
+
+// Requisito 6
+app.use(validateToken);
+app.post('/talker/:id',
+  validateName,
+  validateAge,
+  validateTalk,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+    const { body } = req;
+    const idToEdit = req.params.id;
+    const editUserInfo = await editUser(body, idToEdit);
+    const editedUser = editUserInfo[idToEdit - 1];
+  res.status(HTTP_CREATED_STATUS).json(editedUser);
 });
