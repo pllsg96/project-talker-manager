@@ -11,6 +11,7 @@ const { getTalkers } = require('./utils/getTalkers');
 const { createNewUser } = require('./utils/createNewUser');
 const { editUser } = require('./utils/editUser');
 const { deleteUser } = require('./utils/deleteUser');
+const { searchUser } = require('./utils/searchUser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -28,6 +29,15 @@ app.listen(PORT, () => {
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
+
+// Requisito 8
+
+app.get('/talker/search', validateToken,
+  async (req, res) => {
+    const { q } = req.query;
+    const searchWithQuery = await searchUser(q);
+  res.status(HTTP_OK_STATUS).json(searchWithQuery);
+  });
 
 // Requisito 1
 app.get('/talker', async (_req, res) => {
