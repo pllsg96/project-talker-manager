@@ -10,6 +10,7 @@ const { validateTalk, validateWatchedAt, validateRate } = require('./middlewares
 const { getTalkers } = require('./utils/getTalkers');
 const { createNewUser } = require('./utils/createNewUser');
 const { editUser } = require('./utils/editUser');
+const { deleteUser } = require('./utils/deleteUser');
 
 const app = express();
 app.use(bodyParser.json());
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
 const HTTP_NOT_FOUND_STATUS = 404;
+const HTTP_NO_CONTENT_STATUS = 204;
 const PORT = '3000';
 
 app.listen(PORT, () => {
@@ -64,7 +66,6 @@ app.post('/talker',
 });
 
 // Requisito 6
-app.use(validateToken);
 app.put('/talker/:id',
   validateName,
   validateAge,
@@ -77,4 +78,12 @@ app.put('/talker/:id',
     const editUserInfo = await editUser(body, id);
     const editedUser = editUserInfo[Number(id) - 1];
   res.status(HTTP_OK_STATUS).json(editedUser);
-});
+  });
+
+// Requisito 7
+app.delete('/talker/:id',
+  async (req, res) => {
+    const { id } = req.params;
+    deleteUser(id);
+  res.status(HTTP_NO_CONTENT_STATUS).json();
+  });
