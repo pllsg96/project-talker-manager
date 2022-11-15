@@ -65,7 +65,7 @@ app.post('/talker',
 
 // Requisito 6
 app.use(validateToken);
-app.post('/talker/:id',
+app.put('/talker/:id',
   validateName,
   validateAge,
   validateTalk,
@@ -73,8 +73,8 @@ app.post('/talker/:id',
   validateRate,
   async (req, res) => {
     const { body } = req;
-    const idToEdit = req.params.id;
-    const editUserInfo = await editUser(body, idToEdit);
-    const editedUser = editUserInfo[idToEdit - 1];
-  res.status(HTTP_CREATED_STATUS).json(editedUser);
+    const { id } = req.params;
+    const editUserInfo = await editUser(body, id);
+    const editedUser = editUserInfo[Number(id) - 1];
+  res.status(HTTP_OK_STATUS).json(editedUser);
 });
